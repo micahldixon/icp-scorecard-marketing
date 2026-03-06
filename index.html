@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ICP Quality Tier Scorecard — Undeniable</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #1D1D1D;
+    --charcoal: #2A2A2A;
+    --card: #242424;
+    --card-border: rgba(254,248,227,0.06);
+    --accent: #FFC005;
+    --secondary: #D9D2E9;
+    --cream: #FEF8E3;
+    --cream-50: rgba(254,248,227,0.5);
+    --cream-30: rgba(254,248,227,0.3);
+    --cream-10: rgba(254,248,227,0.08);
+    --tier-s: #FFC005;
+    --tier-a: #D9D2E9;
+    --tier-b: #60a5fa;
+    --tier-c: #f87171;
+    --radius: 12px;
+    --radius-sm: 8px;
+    --radius-pill: 20px;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--cream);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3 { font-family: 'Anton', sans-serif; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
+
+  /* ---- HEADER ---- */
+  .header {
+    text-align: center;
+    padding: 48px 24px 36px;
+    border-bottom: 1px solid var(--card-border);
+    margin-bottom: 32px;
+  }
+  .header-logo { margin-bottom: 16px; }
+  .header-logo svg { height: 36px; width: auto; }
+  .header h1 { font-size: 32px; color: var(--cream); margin-bottom: 6px; }
+  .header .subtitle { color: var(--cream-50); font-size: 14px; font-weight: 500; }
+  .header .meta { color: var(--cream-30); font-size: 12px; margin-top: 8px; }
+  .header .signout { margin-top: 12px; }
+  .header .signout a { font-size: 12px; color: var(--cream-30); text-decoration: none; transition: color 0.2s; }
+  .header .signout a:hover { color: var(--cream-50); }
+
+  /* ---- NAV TABS ---- */
+  .nav-wrap { position: sticky; top: 0; z-index: 100; background: var(--bg); padding: 8px 0 0; }
+  .nav {
+    display: flex;
+    gap: 2px;
+    background: rgba(42,42,42,0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 4px;
+    border-radius: var(--radius);
+    border: 1px solid var(--card-border);
+    flex-wrap: wrap;
+    margin-bottom: 4px;
+  }
+  .nav button {
+    position: relative;
+    flex: 1;
+    min-width: 110px;
+    padding: 10px 14px;
+    border: none;
+    background: transparent;
+    color: var(--cream-50);
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    transition: all 0.2s ease;
+    letter-spacing: 0.2px;
+  }
+  .nav button.active {
+    background: var(--charcoal);
+    color: var(--cream);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  }
+  .nav button:hover:not(.active) { color: var(--cream-30); background: rgba(254,248,227,0.03); }
+  .nav button::after {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: #111;
+    color: var(--cream);
+    font-size: 11px;
+    font-weight: 400;
+    padding: 6px 10px;
+    border-radius: 6px;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s;
+    border: 1px solid var(--card-border);
+    z-index: 200;
+  }
+  .nav button:hover::after { opacity: 1; }
+  .nav-desc {
+    text-align: center;
+    font-size: 12px;
+    color: var(--cream-30);
+    padding: 4px 0 12px;
+    min-height: 28px;
+    transition: opacity 0.2s;
+  }
+
+  /* ---- SECTIONS ---- */
+  .section { display: none; animation: fadeUp 0.3s ease; }
+  .section.active { display: block; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ---- CARDS ---- */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    padding: 28px;
+    margin-bottom: 20px;
+    transition: border-color 0.2s;
+  }
+  .card:hover { border-color: rgba(254,248,227,0.1); }
+  .card h2 {
+    font-size: 20px;
+    color: var(--cream);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .card h3 { font-size: 16px; color: var(--cream); margin: 20px 0 10px; font-family: 'Anton', sans-serif; }
+
+  /* ---- HOW-TO CARD ---- */
+  .how-to {
+    background: linear-gradient(135deg, rgba(255,192,5,0.06) 0%, rgba(217,210,233,0.04) 100%);
+    border: 1px solid rgba(255,192,5,0.15);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+  .how-to h3 { font-size: 15px; color: var(--accent); margin-bottom: 12px; font-family: 'Anton', sans-serif; letter-spacing: 1px; }
+  .how-to-steps { display: flex; gap: 12px; flex-wrap: wrap; }
+  .how-to-step {
+    flex: 1;
+    min-width: 140px;
+    background: rgba(0,0,0,0.2);
+    border-radius: var(--radius-sm);
+    padding: 14px;
+    text-align: center;
+    position: relative;
+  }
+  .how-to-step .step-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #1D1D1D;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .how-to-step .step-label { font-size: 12px; color: var(--cream); font-weight: 600; }
+  .how-to-step .step-desc { font-size: 11px; color: var(--cream-50); margin-top: 4px; }
+
+  /* ---- TIER BADGES ---- */
+  .tier-badge {
+    display: inline-block;
+    padding: 3px 14px;
+    border-radius: var(--radius-pill);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    font-family: 'Inter', sans-serif;
+  }
+  .tier-s { background: rgba(255,192,5,0.12); color: var(--tier-s); border: 1px solid rgba(255,192,5,0.25); }
+  .tier-a { background: rgba(217,210,233,0.12); color: var(--tier-a); border: 1px solid rgba(217,210,233,0.25); }
+  .tier-b { background: rgba(96,165,250,0.12); color: var(--tier-b); border: 1px solid rgba(96,165,250,0.25); }
+  .tier-c { background: rgba(248,113,113,0.12); color: var(--tier-c); border: 1px solid rgba(248,113,113,0.25); }
+
+  /* ---- SUMMARY STATS ---- */
+  .stat-row { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; }
+  .summary-stat {
+    background: var(--charcoal);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-sm);
+    padding: 14px 24px;
+    text-align: center;
+    flex: 1;
+    min-width: 80px;
+  }
+  .summary-stat .num { font-size: 28px; font-weight: 700; font-family: 'Anton', sans-serif; }
+  .summary-stat .lbl { font-size: 11px; color: var(--cream-50); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+
+  /* ---- SCORE GRID ---- */
+  .score-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 768px) { .score-grid { grid-template-columns: 1fr; } }
+  .score-item {
+    background: var(--charcoal);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+  }
+  .score-item .label {
+    font-size: 12px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+  .score-item .desc { font-size: 13px; color: var(--cream-50); }
+
+  /* ---- COMP TABLE ---- */
+  .table-wrap { overflow-x: auto; border-radius: var(--radius-sm); border: 1px solid var(--card-border); }
+  .comp-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .comp-table th {
+    text-align: left;
+    padding: 12px 14px;
+    background: var(--charcoal);
+    color: var(--cream-50);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+  }
+  .comp-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--card-border);
+    vertical-align: top;
+    color: var(--cream-50);
+  }
+  .comp-table tr:hover td { background: rgba(254,248,227,0.02); }
+
+  /* ---- SIGNAL LISTS ---- */
+  .signal-list { list-style: none; }
+  .signal-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--card-border);
+    font-size: 14px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    color: var(--cream-50);
+  }
+  .signal-list li:last-child { border-bottom: none; }
+  .signal-list li strong { color: var(--cream); }
+  .signal-icon {
+    flex-shrink: 0;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    margin-top: 2px;
+  }
+  .signal-green { background: rgba(255,192,5,0.12); color: var(--tier-s); }
+  .signal-red { background: rgba(248,113,113,0.12); color: var(--tier-c); }
+  .signal-yellow { background: rgba(96,165,250,0.12); color: var(--tier-b); }
+
+  /* ---- QUOTES ---- */
+  .quote {
+    background: rgba(0,0,0,0.2);
+    border-left: 3px solid var(--cream-10);
+    padding: 12px 16px;
+    margin: 8px 0;
+    font-style: italic;
+    color: var(--cream-50);
+    font-size: 13px;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  }
+  .quote .attribution { font-style: normal; color: var(--cream-30); font-size: 11px; margin-top: 4px; }
+
+  /* ---- INSIGHT BOX ---- */
+  .insight {
+    background: linear-gradient(135deg, rgba(255,192,5,0.06) 0%, rgba(217,210,233,0.04) 100%);
+    border: 1px solid rgba(255,192,5,0.15);
+    border-radius: var(--radius);
+    padding: 18px;
+    margin: 16px 0;
+  }
+  .insight .insight-label {
+    font-size: 11px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .insight p { font-size: 14px; color: var(--cream-50); }
+  .insight p strong { color: var(--cream); }
+
+  /* ---- PSYCH GRID ---- */
+  .psych-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px; }
+  .psych-card {
+    background: var(--charcoal);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-sm);
+    padding: 18px;
+  }
+  .psych-card h4 { font-size: 13px; color: var(--cream); margin-bottom: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; }
+  .psych-card p { font-size: 13px; color: var(--cream-50); }
+
+  /* ---- SPECTRUM BARS ---- */
+  .spectrum { display: flex; align-items: center; gap: 8px; margin: 8px 0; }
+  .spectrum-bar { flex: 1; height: 8px; background: rgba(254,248,227,0.04); border-radius: 4px; position: relative; overflow: hidden; }
+  .spectrum-fill { height: 100%; border-radius: 4px; }
+  .spectrum-label { font-size: 11px; color: var(--cream-30); min-width: 70px; }
+  .spectrum-label.right { text-align: right; }
+
+  /* ---- FLOWCHART ---- */
+  .flowchart-wrap {
+    position: relative;
+    background: rgba(0,0,0,0.15);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    min-height: 500px;
+  }
+  .fc-controls {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    display: flex;
+    gap: 4px;
+    z-index: 10;
+  }
+  .fc-btn {
+    width: 32px; height: 32px;
+    border: 1px solid var(--card-border);
+    background: var(--charcoal);
+    color: var(--cream);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s;
+  }
+  .fc-btn:hover { background: #333; }
+  .fc-viewport {
+    width: 100%;
+    height: 600px;
+    overflow: auto;
+    cursor: grab;
+  }
+  .fc-viewport:active { cursor: grabbing; }
+  .fc-canvas {
+    min-width: 900px;
+    min-height: 580px;
+    padding: 32px;
+    transform-origin: 0 0;
+  }
+
+  .fc-node {
+    background: var(--charcoal);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-sm);
+    padding: 14px 18px;
+    font-size: 13px;
+    color: var(--cream-50);
+    max-width: 320px;
+    margin: 0 auto;
+    cursor: pointer;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .fc-node:hover { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+  .fc-node strong { color: var(--cream); }
+  .fc-node.q { border-color: rgba(255,192,5,0.3); background: rgba(255,192,5,0.05); }
+  .fc-node.outcome-s { border-color: rgba(255,192,5,0.4); background: rgba(255,192,5,0.08); }
+  .fc-node.outcome-a { border-color: rgba(217,210,233,0.4); background: rgba(217,210,233,0.08); }
+  .fc-node.outcome-b { border-color: rgba(96,165,250,0.4); background: rgba(96,165,250,0.08); }
+  .fc-node.outcome-c { border-color: rgba(248,113,113,0.4); background: rgba(248,113,113,0.08); }
+
+  .fc-detail {
+    display: none;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--card-border);
+    font-size: 12px;
+    color: var(--cream-30);
+  }
+  .fc-node.expanded .fc-detail { display: block; }
+
+  .fc-row { display: flex; align-items: stretch; justify-content: center; gap: 24px; margin: 0; }
+  .fc-col { display: flex; flex-direction: column; align-items: center; }
+  .fc-connector {
+    width: 2px;
+    height: 20px;
+    background: var(--cream-10);
+    margin: 0 auto;
+  }
+  .fc-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin: 4px auto;
+    text-align: center;
+  }
+  .fc-label.yes { color: var(--tier-s); background: rgba(255,192,5,0.08); }
+  .fc-label.no { color: var(--tier-c); background: rgba(248,113,113,0.08); }
+  .fc-h-line {
+    width: 24px;
+    height: 2px;
+    background: var(--cream-10);
+    align-self: center;
+    margin-top: 40px;
+  }
+
+  /* ---- QUIZ SUBMISSIONS ---- */
+  .submissions-empty {
+    text-align: center;
+    padding: 48px 24px;
+    color: var(--cream-30);
+  }
+  .submissions-empty .empty-icon { font-size: 48px; margin-bottom: 12px; opacity: 0.4; }
+  .submissions-empty h3 { font-family: 'Anton', sans-serif; font-size: 18px; color: var(--cream-50); margin-bottom: 8px; }
+  .sub-table-wrap {
+    overflow-x: auto;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--card-border);
+  }
+  .sub-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .sub-table th {
+    text-align: left;
+    padding: 12px 14px;
+    background: var(--charcoal);
+    color: var(--cream-50);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+  }
+  .sub-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--card-border);
+    vertical-align: middle;
+    color: var(--cream-50);
+  }
+  .sub-table tr { cursor: pointer; transition: background 0.15s; }
+  .sub-table tbody tr:hover td { background: rgba(254,248,227,0.02); }
+  .sub-expand {
+    display: none;
+    background: rgba(0,0,0,0.15);
+    padding: 20px;
+    border-bottom: 1px solid var(--card-border);
+  }
+  .sub-expand.show { display: table-row; }
+  .sub-expand td { padding: 0; }
+  .sub-detail-inner { padding: 20px; }
+  .sub-scores-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; margin-top: 12px; }
+  .sub-score-item {
+    background: var(--charcoal);
+    border-radius: 6px;
+    padding: 10px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .sub-score-item .dim-name { font-size: 12px; color: var(--cream-50); }
+  .sub-score-item .dim-val { font-size: 13px; font-weight: 700; color: var(--cream); }
+
+  .sub-cat-bars { margin-top: 16px; }
+  .sub-cat-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  .sub-cat-bar .cat-label { font-size: 12px; color: var(--cream-50); width: 140px; flex-shrink: 0; }
+  .sub-cat-bar .cat-track { flex: 1; height: 8px; background: rgba(254,248,227,0.04); border-radius: 4px; overflow: hidden; }
+  .sub-cat-bar .cat-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease; }
+  .sub-cat-bar .cat-pct { font-size: 12px; color: var(--cream-30); width: 40px; text-align: right; }
+
+  /* Webhook config bar */
+  .webhook-bar {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .webhook-bar input {
+    flex: 1;
+    min-width: 200px;
+    background: var(--charcoal);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-sm);
+    padding: 8px 12px;
+    color: var(--cream);
+    font-size: 13px;
+    font-family: 'Inter', sans-serif;
+  }
+  .webhook-bar input::placeholder { color: var(--cream-30); }
+  .webhook-bar button {
+    background: var(--accent);
+    color: #1D1D1D;
+    border: none;
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+  }
+  .webhook-bar button:hover { filter: brightness(1.1); }
+  .webhook-status { font-size: 11px; color: var(--cream-30); }
+
+  /* ---- UTILITY ---- */
+  .mt-sm { margin-top: 12px; }
+  .mt-md { margin-top: 24px; }
+  .mb-sm { margin-bottom: 12px; }
+
+  @media (max-width: 700px) {
+    .container { padding: 12px; }
+    .card { padding: 18px; }
+    .header h1 { font-size: 24px; }
+    .nav button { min-width: 80px; font-size: 11px; padding: 8px 10px; }
+    .fc-viewport { height: 400px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-logo">
+      <svg width="180" height="38" viewBox="0 0 280 59" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M72.8408 50.3906C69.2601 50.3906 66.6234 49.3896 64.9307 47.3877C63.238 45.3695 62.3916 42.4072 62.3916 38.501V7.03125H70.7412V38.1592C70.7412 38.8753 70.7819 39.5671 70.8633 40.2344C70.9447 40.8854 71.1318 41.4225 71.4248 41.8457C71.7178 42.2689 72.1898 42.4805 72.8408 42.4805C73.5081 42.4805 73.9883 42.277 74.2812 41.8701C74.5742 41.4469 74.7533 40.9017 74.8184 40.2344C74.8997 39.5671 74.9404 38.8753 74.9404 38.1592V7.03125H83.29V38.501C83.29 42.4072 82.4437 45.3695 80.751 47.3877C79.0583 49.3896 76.4215 50.3906 72.8408 50.3906ZM86.5859 50V7.03125H95.4238L99.3789 27.6123V7.03125H107.68V50H99.2812L94.9844 28.5156V50H86.5859ZM111.488 50V7.03125H123.305C126.397 7.03125 128.725 7.89388 130.287 9.61914C131.85 11.3281 132.631 13.8346 132.631 17.1387V37.2559C132.631 41.3249 131.915 44.4661 130.482 46.6797C129.066 48.8932 126.576 50 123.012 50H111.488ZM120.131 42.4072H121.62C123.199 42.4072 123.988 41.6423 123.988 40.1123V17.9443C123.988 16.512 123.793 15.5924 123.402 15.1855C123.028 14.7624 122.255 14.5508 121.083 14.5508H120.131V42.4072ZM136.146 50V7.03125H153.334V15.332H144.887V23.7061H152.992V31.7871H144.887V41.626H153.896V50H136.146ZM156.752 50V7.03125H165.59L169.545 27.6123V7.03125H177.846V50H169.447L165.15 28.5156V50H156.752ZM181.264 50V7.03125H189.564V50H181.264ZM191.811 50L195.961 7.03125H210.536L214.613 50H206.483L205.873 43.0664H200.697L200.16 50H191.811ZM201.308 36.2061H205.214L203.334 14.3555H202.943L201.308 36.2061ZM217.25 50V7.03125H228.896C232.021 7.03125 234.291 7.79622 235.707 9.32617C237.139 10.8398 237.855 13.3464 237.855 16.8457V18.7256C237.855 20.7438 237.489 22.3796 236.757 23.6328C236.041 24.8861 234.942 25.708 233.461 26.0986C235.398 26.5869 236.692 27.7344 237.343 29.541C238.01 31.3314 238.344 33.5205 238.344 36.1084C238.344 38.8916 238.083 41.3249 237.562 43.4082C237.042 45.4915 236.098 47.111 234.73 48.2666C233.363 49.4222 231.418 50 228.896 50H217.25ZM225.648 23.2178H227.406C228.204 23.2178 228.716 22.9085 228.944 22.29C229.172 21.6715 229.286 20.931 229.286 20.0684V15.7471C229.286 14.3636 228.676 13.6719 227.455 13.6719H225.648V23.2178ZM226.503 42.4316C228.733 42.4316 229.848 41.3737 229.848 39.2578V33.8867C229.848 32.666 229.66 31.7057 229.286 31.0059C228.928 30.2897 228.244 29.9316 227.235 29.9316H225.648V42.3828C226.007 42.4154 226.291 42.4316 226.503 42.4316ZM241.176 50V7.03125H249.77V42.6758H258.607V50H241.176ZM261.049 50V7.03125H278.236V15.332H269.789V23.7061H277.895V31.7871H269.789V41.626H278.798V50H261.049Z" fill="#EDC13A"/>
+        <path d="M24.5408 48.7208C24.2477 48.8634 23.8632 48.9811 23.6867 48.9811C23.5119 48.9811 22.9009 48.593 22.328 48.1171C21.7554 47.6427 18.6751 44.9046 15.4817 42.0336C10.7334 37.7646 9.6044 36.6667 9.27977 36.0049C8.7153 34.8523 8.64203 9.71602 9.20319 9.26646C9.62446 8.92819 20.2985 8.87845 20.708 9.21184C20.9195 9.38593 20.9662 11.0941 21.0377 21.5046C21.1209 33.5952 21.1209 33.5952 21.7037 34.2818C22.9991 35.806 25.1002 35.67 26.0742 33.9999C26.5321 33.2136 26.5321 33.2136 26.5321 9.01115H28.6134C33.8364 9.01115 37.5758 11.0129 38.5099 14.3084C39.0792 16.3169 39.0393 35.2105 38.4631 36.1792C38.0169 36.927 25.38 48.3128 24.5408 48.7208Z" fill="#EDC13A"/>
+        <path d="M13.2125 51.5685C2.06558 41.9258 1.20805 41.0403 0.460418 38.4015C-0.0606346 36.5656 -0.183793 7.49863 0.32226 5.71064C1.05821 3.1035 3.05447 1.09838 5.61189 0.396834C8.0411 -0.268228 41.5235 -0.0393416 43.1218 0.653912C45.0298 1.4815 46.5084 3.0355 47.1676 4.90629C47.8969 6.97289 47.9834 36.1044 47.2675 38.5458C46.5733 40.9192 45.7658 41.7749 36.8698 49.5632C28.142 57.204 27.4063 57.7746 25.6314 58.2605C24.9504 58.448 24.0513 58.6005 23.6318 58.6005C23.2121 58.6005 22.3929 58.4495 21.8119 58.2655C20.4933 57.8459 20.2618 57.6667 13.2125 51.5685ZM6.50431 39.5526C8.17089 41.3371 21.7236 53.1573 22.5778 53.5719C23.0124 53.7841 23.5186 53.9566 23.7033 53.9566C23.8882 53.9566 24.4708 53.7808 24.9987 53.5669C26.2175 53.0744 40.8074 40.4747 41.9863 38.899C43.2033 37.2688 43.2 37.3284 43.145 21.0933C43.0918 5.24959 43.175 5.98107 41.3503 5.0722C40.0432 4.4221 7.56995 4.49829 6.3311 5.15515C4.60958 6.06733 4.72105 4.91463 4.72105 21.8314C4.72105 38.7067 4.60121 37.5159 6.50431 39.5526Z" fill="#EDC13A"/>
+      </svg>
+    </div>
+    <h1>ICP Quality Tier Scorecard</h1>
+    <p class="subtitle">Psych Profiling System for Sales Team Prospect Qualification</p>
+    <p class="meta">Based on analysis of 15 pre-purchase discovery call transcripts across S/A/B/C tiers</p>
+    <p class="signout"><a href="/api/logout">Sign out</a></p>
+  </div>
+
+  <!-- NAV -->
+  <div class="nav-wrap">
+    <div class="nav" id="mainNav">
+      <button class="active" onclick="showTab('overview',this)" data-tip="Start here — tier overview &amp; how to use this tool" data-desc="Tier definitions, revenue impact data, and how to use each tab effectively.">Overview</button>
+      <button onclick="showTab('signals',this)" data-tip="What to listen for on calls" data-desc="Green lights, yellow flags, and red signals organized by tier — with exact transcript evidence.">Tier Signals</button>
+      <button onclick="showTab('language',this)" data-tip="Exact phrases mapped to tiers" data-desc="Real quotes from transcripts mapped to tier predictions. Train your ear to hear these during calls.">Language Patterns</button>
+      <button onclick="showTab('psych',this)" data-tip="Psychological profiles per archetype" data-desc="Deep psychological profiles for each archetype — identity, failure response, investment frame, social orientation.">Psych Profiles</button>
+      <button onclick="showTab('dominance',this)" data-tip="Dominance vs. facilitation analysis" data-desc="Where each prospect falls on the dominance-facilitation spectrum, and what the sweet spot looks like.">Dom vs Facil</button>
+      <button onclick="showTab('submissions',this)" data-tip="Quiz results from prospects" data-desc="View Scale Readiness Scorecard submissions from prospects — scores, archetypes, and internal tier classifications.">Quiz Results</button>
+      <button onclick="showTab('decision',this)" data-tip="Interactive triage flowchart" data-desc="Interactive flowchart for rapid triage in the first 10 minutes of a call. Click nodes for detail.">Decision Tree</button>
+      <button onclick="showTab('playbook',this)" data-tip="Tier-specific sales tactics" data-desc="Exactly how to handle each tier on a call — what to say, what to avoid, when to close, when to walk.">Sales Playbook</button>
+    </div>
+    <div class="nav-desc" id="navDesc">Tier definitions, revenue impact data, and how to use each tab effectively.</div>
+  </div>
+
+  <!-- ===================== OVERVIEW ===================== -->
+  <div id="overview" class="section active">
+    <div class="how-to">
+      <h3>How to Use This Tool</h3>
+      <div class="how-to-steps">
+        <div class="how-to-step">
+          <div class="step-num">1</div>
+          <div class="step-label">Overview</div>
+          <div class="step-desc">Learn the 4 tiers &amp; what separates them</div>
+        </div>
+        <div class="how-to-step">
+          <div class="step-num">2</div>
+          <div class="step-label">Tier Signals</div>
+          <div class="step-desc">Know what to listen for on calls</div>
+        </div>
+        <div class="how-to-step">
+          <div class="step-num">3</div>
+          <div class="step-label">Decision Tree</div>
+          <div class="step-desc">Quick-sort prospects in 10 min</div>
+        </div>
+        <div class="how-to-step">
+          <div class="step-num">4</div>
+          <div class="step-label">Sales Playbook</div>
+          <div class="step-desc">Run the right play for their tier</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Tier Definitions &amp; Revenue Impact</h2>
+      <div class="stat-row">
+        <div class="summary-stat"><div class="num" style="color:var(--tier-s)">3</div><div class="lbl">S-Tier</div></div>
+        <div class="summary-stat"><div class="num" style="color:var(--tier-a)">4</div><div class="lbl">A-Tier</div></div>
+        <div class="summary-stat"><div class="num" style="color:var(--tier-b)">2</div><div class="lbl">B-Tier</div></div>
+        <div class="summary-stat"><div class="num" style="color:var(--tier-c)">6</div><div class="lbl">C-Tier</div></div>
+      </div>
+
+      <div class="table-wrap">
+      <table class="comp-table">
+        <thead><tr>
+          <th>Tier</th><th>Archetype</th><th>Avg MRR</th><th>Refund Risk</th><th>Community Value</th><th>LTV</th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td><span class="tier-badge tier-s">S-TIER</span></td>
+            <td>The Architect</td>
+            <td>$13.5k–$20k</td>
+            <td style="color:var(--tier-s)">Very Low</td>
+            <td style="color:var(--tier-s)">Extremely High (referrals, content, culture)</td>
+            <td style="color:var(--tier-s)">3–5x</td>
+          </tr>
+          <tr>
+            <td><span class="tier-badge tier-a">A-TIER</span></td>
+            <td>The Optimizer</td>
+            <td>$2k–$70k</td>
+            <td style="color:var(--tier-a)">Low</td>
+            <td style="color:var(--tier-a)">High (engaged learners, moderate sharing)</td>
+            <td style="color:var(--tier-a)">2–3x</td>
+          </tr>
+          <tr>
+            <td><span class="tier-badge tier-b">B-TIER</span></td>
+            <td>The Foundation Builder</td>
+            <td>$0–$37k</td>
+            <td style="color:var(--tier-b)">Moderate</td>
+            <td style="color:var(--tier-b)">Low–Medium (consume, limited contribution)</td>
+            <td style="color:var(--tier-b)">1–1.5x</td>
+          </tr>
+          <tr>
+            <td><span class="tier-badge tier-c">C-TIER</span></td>
+            <td>The Explorer</td>
+            <td>$5k–$30k</td>
+            <td style="color:var(--tier-c)">Very High (50–70%+)</td>
+            <td style="color:var(--tier-c)">Negative (extract, disrupt, or ghost)</td>
+            <td style="color:var(--tier-c)">0.3–0.7x</td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+
+      <div class="insight">
+        <div class="insight-label">Key Finding</div>
+        <p>Revenue at entry does NOT predict tier. Victor Dwyer (B-Tier) had $37k MRR while Matt Forsyth (S-Tier) had only $3.5k MRR. The differentiator is <strong>mindset architecture</strong>: how they think about growth, community, accountability, and action.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>The 5 Pillars of Tier Prediction</h2>
+      <div class="score-grid">
+        <div class="score-item">
+          <div class="label">1. Builder Identity</div>
+          <div class="desc">Do they see themselves as building something long-term, or solving a short-term problem? S-Tier says "I want to scale to the sky." C-Tier says "If you can help me with this one thing."</div>
+        </div>
+        <div class="score-item">
+          <div class="label">2. Ownership Posture</div>
+          <div class="desc">Do they own their mistakes and gaps, or externalize blame? S-Tier: "I've been the bottleneck." C-Tier: "It's not working like it used to" (market's fault).</div>
+        </div>
+        <div class="score-item">
+          <div class="label">3. Action Evidence</div>
+          <div class="desc">Have they already taken action BEFORE the call? S-Tier consumed courses, filled out planners, built lead magnets. C-Tier is "exploring" and "toying between" options.</div>
+        </div>
+        <div class="score-item">
+          <div class="label">4. Community Orientation</div>
+          <div class="desc">Do they naturally think about contributing to others, or only extracting for themselves? S-Tier offers podcast testimonials and wants staff to learn. C-Tier says "I don't want teammates."</div>
+        </div>
+        <div class="score-item">
+          <div class="label">5. Decision Sovereignty</div>
+          <div class="desc">Can they make the investment decision autonomously? S-Tier decides within the call or within hours. C-Tier needs spouse, accountant, or partner approval and delays weeks.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== SIGNALS ===================== -->
+  <div id="signals" class="section">
+    <div class="card">
+      <h2><span class="tier-badge tier-s">S-TIER</span> Green Light Signals</h2>
+      <p style="font-size:13px; color:var(--cream-30); margin-bottom:12px;">If you hear 5+ of these on a call, you likely have an S-Tier prospect (The Architect).</p>
+      <ul class="signal-list">
+        <li><span class="signal-icon signal-green">&#10003;</span> <div><strong>Pre-call engagement:</strong> Already consumed free content, filled out business planner, or researched the program before the discovery call.<br><span style="color:var(--cream-30); font-size:12px;">Matt: "I can't wait to get inside your guys' funnel. I've been consuming all of them." Victor M: "We already pre-decided we were going to work with you guys."</span></div></li>
+        <li><span class="signal-icon signal-green">&#10003;</span> <div><strong>Specific numbers without prompting:</strong> Quotes exact MRR, margins, pipeline values, and growth targets without being asked to calculate.<br><span style="color:var(--cream-30); font-size:12px;">Harry: "$20k MRR... 6 ghostwriting clients... $3K euros/month retainers."</span></div></li>
+        <li><span class="signal-icon signal-green">&#10003;</span> <div><strong>Self-diagnosed bottleneck:</strong> Identifies their own constraint with clarity and ownership rather than vague frustration.<br><span style="color:var(--cream-30); font-size:12px;">Matt: "I've been a bit of a bottleneck in terms of skill." Harry: "The bottleneck is making our offer scalable."</span></div></li>
+        <li><span class="signal-icon signal-green">&#10003;</span> <div><strong>Systems language:</strong> Talks in frameworks, processes, KPIs. Asks about dashboards, tracking, and operational efficiency.<br><span style="color:var(--cream-30); font-size:12px;">Matt: "I saw that dashboard and I was just bouncing off the walls."</span></div></li>
+        <li><span class="signal-icon signal-green">&#10003;</span> <div><strong>12+ month vision:</strong> Articulates goals beyond the 90-day sprint; sees the program as acceleration, not a magic bullet.<br><span style="color:var(--cream-30); font-size:12px;">Victor M: "I don't think I want to sell. I just love building something." Target: $100k MRR in 12-14 months.</span></div></li>
+        <li><span class="signal-icon signal-green">&#10003;</span> <div><strong>ROI framing (not cost framing):</strong> Immediately calculates how the investment pays for itself through client wins.<br><span style="color:var(--cream-30); font-size:12px;">Harry: "This offer is only 5k. The ROI on that 5k is going to be incredible."</span></div></li>
+        <li><span class="signal-icon signal-green">&#10003;</span> <div><strong>Community contribution offers:</strong> Voluntarily offers to create content, record testimonials, refer others, or bring staff to learn.<br><span style="color:var(--cream-30); font-size:12px;">Harry: "My goal is to be your best testimonial." Matt: "I'm prepared to invest and get my staff going through calls."</span></div></li>
+        <li><span class="signal-icon signal-green">&#10003;</span> <div><strong>Direct feedback / no-BS filter:</strong> Gives honest, constructive criticism about your marketing or sales process mid-call.<br><span style="color:var(--cream-30); font-size:12px;">Harry: "Every single testimonial starts 'Before working with Nigel.' That turned me off."</span></div></li>
+        <li><span class="signal-icon signal-green">&#10003;</span> <div><strong>Ethical awareness:</strong> Has turned down money or pivoted away from something that didn't feel right.<br><span style="color:var(--cream-30); font-size:12px;">Victor M: "It didn't feel ethically giving advice on something that I haven't done myself."</span></div></li>
+        <li><span class="signal-icon signal-green">&#10003;</span> <div><strong>Quick, autonomous decision-making:</strong> Decides within the call or commits to a firm timeline measured in hours, not weeks.<br><span style="color:var(--cream-30); font-size:12px;">Matt: "Within 60 minutes, I'm prepared to give a firm yes or no."</span></div></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2><span class="tier-badge tier-a">A-TIER</span> Positive Signals (with caveats)</h2>
+      <p style="font-size:13px; color:var(--cream-30); margin-bottom:12px;">Solid prospects (The Optimizer) who need one more push to be great. Listen for the "ceiling + self-awareness" combo.</p>
+      <ul class="signal-list">
+        <li><span class="signal-icon signal-green">&#10003;</span> <div><strong>Revenue exists but has a ceiling:</strong> Making money, but growth has plateaued or one channel is maxed out.<br><span style="color:var(--cream-30); font-size:12px;">Manuel: 70k MRR but 20% margins. Daniel: 15-20k CAD but 3 clients only. Mischa: "$2,100/month but knows she should charge 3-5x."</span></div></li>
+        <li><span class="signal-icon signal-green">&#10003;</span> <div><strong>"I know I'm underselling myself":</strong> Self-aware about pricing problems and ready to change with guidance.<br><span style="color:var(--cream-30); font-size:12px;">Mischa: "I personally know that I'm massively underselling myself... my prices are really low." Henry: "My closing rates are way too high. I need to jack up my prices."</span></div></li>
+        <li><span class="signal-icon signal-green">&#10003;</span> <div><strong>Methodical decision-making:</strong> Not impulsive, but not avoidant. Asks specific questions, wants to understand before committing.<br><span style="color:var(--cream-30); font-size:12px;">Daniel: "Can you send me a breakdown? A TLDR?"</span></div></li>
+        <li><span class="signal-icon signal-yellow">!</span> <div><strong>Compares options openly (not a red flag here):</strong> Evaluating competitors means they're serious buyers, not tire-kickers.<br><span style="color:var(--cream-30); font-size:12px;">Henry: Comparing Six Figure Creative vs. Undeniable. Manuel: Already has a 1:1 mentor.</span></div></li>
+        <li><span class="signal-icon signal-green">&#10003;</span> <div><strong>Operational thinking visible:</strong> Has team, systems, processes — just needs optimization, not creation.<br><span style="color:var(--cream-30); font-size:12px;">Manuel: COO structure, cluster model, health trackers. Henry: GoHighLevel templates, VA in Philippines, ClickUp.</span></div></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2><span class="tier-badge tier-b">B-TIER</span> Caution Signals</h2>
+      <p style="font-size:13px; color:var(--cream-30); margin-bottom:12px;">Not bad people (The Foundation Builder), but will require disproportionate coaching resources relative to outcomes.</p>
+      <ul class="signal-list">
+        <li><span class="signal-icon signal-yellow">!</span> <div><strong>Pain-driven, not vision-driven:</strong> Running FROM something (bad job, stagnation) rather than TOWARD something specific.<br><span style="color:var(--cream-30); font-size:12px;">David: "The cost of staying where you are is greater than the cost of moving forward." (Fear framing, not aspiration framing.)</span></div></li>
+        <li><span class="signal-icon signal-yellow">!</span> <div><strong>Explicit confidence deficit:</strong> States they "struggle with confidence" or need external reassurance to take action.<br><span style="color:var(--cream-30); font-size:12px;">Mark had to tell David: "I want you to approach these months with an insane amount of confidence" because David explicitly struggles with it.</span></div></li>
+        <li><span class="signal-icon signal-yellow">!</span> <div><strong>Compliance without internalization:</strong> Follows instructions precisely but doesn't seem to understand the "why."<br><span style="color:var(--cream-30); font-size:12px;">David: "Yeah... Yes... Yep" throughout the call. Takes notes, follows steps, but doesn't ask strategic questions.</span></div></li>
+        <li><span class="signal-icon signal-yellow">!</span> <div><strong>Complacency once goals met:</strong> Stops pushing once they hit a comfort level rather than stretching further.<br><span style="color:var(--cream-30); font-size:12px;">Victor D: "As long as I have food, water, and dancing, I'm pretty much good." Coaches had to "challenge" him past $50k goal.</span></div></li>
+        <li><span class="signal-icon signal-yellow">!</span> <div><strong>Delegation of community participation:</strong> Sends team members to calls instead of attending personally.<br><span style="color:var(--cream-30); font-size:12px;">Victor D: Plans to send operations manager to CFO call, "might listen to recording."</span></div></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2><span class="tier-badge tier-c">C-TIER</span> Red Flag Signals (First 15 Minutes)</h2>
+      <p style="font-size:13px; color:var(--cream-30); margin-bottom:12px;">If you catch 3+ of these in the first 15 minutes, strongly consider disqualifying (The Explorer).</p>
+      <ul class="signal-list">
+        <li><span class="signal-icon signal-red">&#10007;</span> <div><strong>"I already know everything":</strong> Pre-closing language that dismisses the discovery process. They've already decided what they need (usually wrong).<br><span style="color:var(--cream-30); font-size:12px;">Frank: "I already know everything about you guys because of Victor." Eric: "I'm familiar with all of the strategy... it's information I already have access to."</span></div></li>
+        <li><span class="signal-icon signal-red">&#10007;</span> <div><strong>External decision dependency:</strong> Can't commit without spouse, partner, or accountant approval. Decision sovereignty is absent.<br><span style="color:var(--cream-30); font-size:12px;">Andrew: "I need to chat to my wife." Cassie: "I need to check who paid" before committing. Jason: "I have a 35k bill I'm about to pay."</span></div></li>
+        <li><span class="signal-icon signal-red">&#10007;</span> <div><strong>Conditional language patterns:</strong> Heavy use of "if," "maybe," "probably," "we'll see" when discussing commitment.<br><span style="color:var(--cream-30); font-size:12px;">Frank: "If I'm impressed, I will buy." Jason: "If the price is right." Andrew: "Maybe a month from now I can..."</span></div></li>
+        <li><span class="signal-icon signal-red">&#10007;</span> <div><strong>Bandwidth already maxed:</strong> Currently overextended with job, clients, side projects. No capacity for a 90-day sprint.<br><span style="color:var(--cream-30); font-size:12px;">Frank: "I have all my one-on-ones today." Jenny: "My capacity is full enough, just recently a little bit for business development." Andrew: 50%+ employed elsewhere.</span></div></li>
+        <li><span class="signal-icon signal-red">&#10007;</span> <div><strong>Wants tactics, not transformation:</strong> Seeks one specific deliverable (stage access, lead gen tactic) rather than comprehensive growth.<br><span style="color:var(--cream-30); font-size:12px;">Frank: "If you can help me get strategic on stage, I will pay you money for that." Eric: "I'm looking for really tactics... scripts."</span></div></li>
+        <li><span class="signal-icon signal-red">&#10007;</span> <div><strong>Boom-bust revenue history:</strong> Pattern of spiking then crashing, multiple pivots, volatile career trajectory.<br><span style="color:var(--cream-30); font-size:12px;">Jason: $80k agency → bust → $100k → $5k → $30k → repeat over 20 years. Cassie: $30k → $10k (67% decline).</span></div></li>
+        <li><span class="signal-icon signal-red">&#10007;</span> <div><strong>Shopping around explicitly:</strong> Mentions other programs they're evaluating in a hedging way (not comparing = deciding).<br><span style="color:var(--cream-30); font-size:12px;">Andrew: "Another agency owner is also reaching out." Eric: Questioning how program differs from info he already has.</span></div></li>
+        <li><span class="signal-icon signal-red">&#10007;</span> <div><strong>"It's not working like it used to":</strong> Blames market changes rather than owning their own stagnation.<br><span style="color:var(--cream-30); font-size:12px;">Cassie: "I don't know if I've lost my mojo... it's not working like it did." (Externalizing responsibility.)</span></div></li>
+        <li><span class="signal-icon signal-red">&#10007;</span> <div><strong>Controlling / dominating the call:</strong> Takes over, interrupts, tests the seller, positions themselves as equal or superior.<br><span style="color:var(--cream-30); font-size:12px;">Frank: "You are my vendor." "Is this recording for me or just for you?" Constant self-aggrandizing stories.</span></div></li>
+        <li><span class="signal-icon signal-red">&#10007;</span> <div><strong>Anti-community language:</strong> Explicitly rejects collaboration, teamwork, or shared learning.<br><span style="color:var(--cream-30); font-size:12px;">Frank: "I don't want teammates. I want to do this by myself."</span></div></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===================== LANGUAGE ===================== -->
+  <div id="language" class="section">
+    <div class="card">
+      <h2>Language Pattern Decoder</h2>
+      <p style="font-size:13px; color:var(--cream-30); margin-bottom:16px;">Exact phrases from transcripts mapped to tier predictions. Train your ear to hear these during calls.</p>
+
+      <h3><span class="tier-badge tier-s">S-TIER</span> Language — The Architect</h3>
+      <div class="quote">"I can't wait to get inside your funnel. I've been consuming all of them."<div class="attribution">— Matt Forsyth (pre-call action, enthusiasm for systems)</div></div>
+      <div class="quote">"I've been a bit of a bottleneck in terms of skill."<div class="attribution">— Matt Forsyth (self-ownership, no blame externalization)</div></div>
+      <div class="quote">"It didn't feel ethically giving advice on something I haven't done myself."<div class="attribution">— Victor Moen (integrity signal, values-driven decisions)</div></div>
+      <div class="quote">"Me and my founder have this mentality of pay people better than us."<div class="attribution">— Victor Moen (investment mindset, growth orientation)</div></div>
+      <div class="quote">"My goal is to be your best testimonial because then everyone's happy."<div class="attribution">— Harry Phokou (win-win thinking, community contribution)</div></div>
+      <div class="quote">"That turned me off" [re: testimonials format]<div class="attribution">— Harry Phokou (direct feedback, no-BS filter, engaged enough to critique)</div></div>
+
+      <h3 class="mt-md"><span class="tier-badge tier-a">A-TIER</span> Language — The Optimizer</h3>
+      <div class="quote">"I personally know that I'm massively underselling myself... my prices are really low."<div class="attribution">— Mischa Collins (self-aware, ready to change, seeking permission)</div></div>
+      <div class="quote">"My closing rates are way too high. I need to jack up my prices."<div class="attribution">— Henry Kemme (data-driven insight, recognizes optimization opportunity)</div></div>
+      <div class="quote">"I don't care about the quantity. It's more about the quality of calls."<div class="attribution">— Manuel Obermeier (strategic thinking, mature operator)</div></div>
+      <div class="quote">"I feel like an idiot, but I also understand this doesn't happen overnight."<div class="attribution">— Daniel Khadem (self-critical but patient, growth mindset)</div></div>
+
+      <h3 class="mt-md"><span class="tier-badge tier-b">B-TIER</span> Language — The Foundation Builder</h3>
+      <div class="quote">"I'm incredibly scared, but I think the cost of staying where you are is greater than the cost of moving forward."<div class="attribution">— David Ferrel (fear-driven, not vision-driven; pain framing)</div></div>
+      <div class="quote">"As long as I have food, water, and dancing, I'm pretty much good."<div class="attribution">— Victor Dwyer (complacency signal, low ambition ceiling relative to potential)</div></div>
+      <div class="quote">"If we hit 100k MRR, my life wouldn't really change that much."<div class="attribution">— Victor Dwyer (misaligned motivation with program's ambitious culture)</div></div>
+
+      <h3 class="mt-md"><span class="tier-badge tier-c">C-TIER</span> Language — The Explorer</h3>
+      <div class="quote">"I already know everything about you guys."<div class="attribution">— Frank Lofaro (dismissive, closed to learning, pre-decided)</div></div>
+      <div class="quote">"You are my vendor. Do what you need to do. If I'm impressed, I will buy."<div class="attribution">— Frank Lofaro (transactional, power-positioning, no partnership mentality)</div></div>
+      <div class="quote">"I don't want teammates. I want to do this by myself."<div class="attribution">— Frank Lofaro (anti-community, anti-collaboration, solo operator)</div></div>
+      <div class="quote">"I need to chat to my wife."<div class="attribution">— Andrew Warkentin (external decision dependency, no sovereignty)</div></div>
+      <div class="quote">"I'm familiar with all of the strategy... it's information I already have access to."<div class="attribution">— Eric Boissonneault (dismissive of value, wants tactics only)</div></div>
+      <div class="quote">"I don't know if I've lost my mojo."<div class="attribution">— Cassie Lincoln (fragile confidence, externalizing stagnation to "mojo")</div></div>
+      <div class="quote">"I'm always tinkering."<div class="attribution">— Jason Wilson (restless distraction, shiny object syndrome)</div></div>
+    </div>
+  </div>
+
+  <!-- ===================== PSYCH PROFILES ===================== -->
+  <div id="psych" class="section">
+    <div class="card">
+      <h2>Psychological Archetypes by Tier</h2>
+
+      <h3><span class="tier-badge tier-s">S-TIER</span> — The Architect</h3>
+      <div class="psych-grid">
+        <div class="psych-card">
+          <h4>Core Identity</h4>
+          <p>Sees themselves as building something meaningful for the long term. Not chasing exits or quick cash. Growth is intrinsic to their identity, not a means to an end.</p>
+        </div>
+        <div class="psych-card">
+          <h4>Relationship to Failure</h4>
+          <p>Owns mistakes openly and specifically. Uses past failures as data for current decisions. No shame, no hiding — just pragmatic course correction.</p>
+        </div>
+        <div class="psych-card">
+          <h4>Investment Frame</h4>
+          <p>Views coaching/mentorship as "paying people better than us." Calculates ROI on the call. Sees the program as acceleration, not rescue.</p>
+        </div>
+        <div class="psych-card">
+          <h4>Social Orientation</h4>
+          <p>Naturally collaborative. Brings team to learn, offers testimonials voluntarily, attends events. Thinks "how can this help everyone" not just "how does this help me."</p>
+        </div>
+      </div>
+
+      <h3 class="mt-md"><span class="tier-badge tier-a">A-TIER</span> — The Optimizer</h3>
+      <div class="psych-grid">
+        <div class="psych-card">
+          <h4>Core Identity</h4>
+          <p>Has a working business and knows it could be much bigger. Self-aware about the ceiling but needs external frameworks and permission to break through.</p>
+        </div>
+        <div class="psych-card">
+          <h4>Relationship to Failure</h4>
+          <p>Recognizes mistakes but may need external validation that change is the right move. "I know my prices are wrong" but hasn't fixed it yet.</p>
+        </div>
+        <div class="psych-card">
+          <h4>Investment Frame</h4>
+          <p>Methodical: wants to understand the full picture before committing. Not impulsive, not avoidant. Asks "what does success look like specifically?"</p>
+        </div>
+        <div class="psych-card">
+          <h4>Social Orientation</h4>
+          <p>Interested in community for learning and validation. Will engage moderately. Wants to be around people 1-2 steps ahead. Won't dominate but will contribute.</p>
+        </div>
+      </div>
+
+      <h3 class="mt-md"><span class="tier-badge tier-b">B-TIER</span> — The Foundation Builder</h3>
+      <div class="psych-grid">
+        <div class="psych-card">
+          <h4>Core Identity</h4>
+          <p>Either pre-revenue and escaping a bad situation (David) or comfortable and complacent (Victor D). Both need external structure to drive action. Identity not yet anchored in entrepreneurship.</p>
+        </div>
+        <div class="psych-card">
+          <h4>Relationship to Failure</h4>
+          <p>Swings between fear and excitement. Confidence is externally sourced — coach must provide it. Doesn't yet have the internal resilience loop of higher tiers.</p>
+        </div>
+        <div class="psych-card">
+          <h4>Investment Frame</h4>
+          <p>Pays without much objection (David) or negotiates based on capacity (Victor D). Neither calculates ROI — they're buying hope or structure, not acceleration.</p>
+        </div>
+        <div class="psych-card">
+          <h4>Social Orientation</h4>
+          <p>Seeks community out of loneliness (David) or is ambivalent about it (Victor D). Neither will drive culture. Need to be explicitly matched with peers at similar stages.</p>
+        </div>
+      </div>
+
+      <h3 class="mt-md"><span class="tier-badge tier-c">C-TIER</span> — The Explorer</h3>
+      <div class="psych-grid">
+        <div class="psych-card">
+          <h4>Core Identity</h4>
+          <p>Sees coaching as a service transaction, not a transformation. Pre-decided what they need (usually a narrow tactic). Views the relationship as vendor-client, not mentor-mentee.</p>
+        </div>
+        <div class="psych-card">
+          <h4>Relationship to Failure</h4>
+          <p>Externalizes blame. "The market changed." "It's not working like it used to." "I need to check if my clients paid." Never: "I created this problem."</p>
+        </div>
+        <div class="psych-card">
+          <h4>Investment Frame</h4>
+          <p>May pay quickly (Frank paid $15k fast) but the money is conditional on specific narrow deliverables. If the promised outcome doesn't materialize on their accelerated timeline, they'll request refund.</p>
+        </div>
+        <div class="psych-card">
+          <h4>Social Orientation</h4>
+          <p>Either dominating (Frank controls calls, positions as equal) or extractive (take tactics, don't contribute). Will not build culture. Some are warm but passive (Jenny, Cassie) — nice people, wrong program.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== DOMINANCE VS FACILITATION ===================== -->
+  <div id="dominance" class="section">
+    <div class="card">
+      <h2>Dominance vs. Facilitation: What Your Data Reveals</h2>
+
+      <div class="insight">
+        <div class="insight-label">Critical Finding</div>
+        <p>Your tier data shows you value <strong>Facilitation with Backbone</strong> — not pure dominance and not pure passivity. S-Tier (Architects) are confident enough to give direct feedback and negotiate, but fundamentally collaborative. C-Tier's pure dominance (Frank) and pure passivity (Andrew, Jenny) are both failure modes.</p>
+      </div>
+
+      <h3>The Spectrum by Prospect</h3>
+
+      <div style="margin:16px 0;">
+        <div style="font-size:13px; color:var(--cream-50); margin-bottom:4px;">Frank Lofaro <span class="tier-badge tier-c" style="font-size:10px;">C</span></div>
+        <div class="spectrum">
+          <span class="spectrum-label">Dominant</span>
+          <div class="spectrum-bar"><div class="spectrum-fill" style="width:95%; background:linear-gradient(90deg, var(--tier-c), #dc2626);"></div></div>
+          <span class="spectrum-label right">Facilitative</span>
+        </div>
+      </div>
+      <div style="margin:16px 0;">
+        <div style="font-size:13px; color:var(--cream-50); margin-bottom:4px;">Harry Phokou <span class="tier-badge tier-s" style="font-size:10px;">S</span></div>
+        <div class="spectrum">
+          <span class="spectrum-label">Dominant</span>
+          <div class="spectrum-bar"><div class="spectrum-fill" style="width:65%; background:linear-gradient(90deg, var(--tier-s), #eab308);"></div></div>
+          <span class="spectrum-label right">Facilitative</span>
+        </div>
+      </div>
+      <div style="margin:16px 0;">
+        <div style="font-size:13px; color:var(--cream-50); margin-bottom:4px;">Matt Forsyth <span class="tier-badge tier-s" style="font-size:10px;">S</span></div>
+        <div class="spectrum">
+          <span class="spectrum-label">Dominant</span>
+          <div class="spectrum-bar"><div class="spectrum-fill" style="width:55%; background:linear-gradient(90deg, var(--tier-s), #eab308);"></div></div>
+          <span class="spectrum-label right">Facilitative</span>
+        </div>
+      </div>
+      <div style="margin:16px 0;">
+        <div style="font-size:13px; color:var(--cream-50); margin-bottom:4px;">Victor Moen <span class="tier-badge tier-s" style="font-size:10px;">S</span></div>
+        <div class="spectrum">
+          <span class="spectrum-label">Dominant</span>
+          <div class="spectrum-bar"><div class="spectrum-fill" style="width:40%; background:linear-gradient(90deg, var(--tier-s), #eab308);"></div></div>
+          <span class="spectrum-label right">Facilitative</span>
+        </div>
+      </div>
+      <div style="margin:16px 0;">
+        <div style="font-size:13px; color:var(--cream-50); margin-bottom:4px;">Manuel Obermeier <span class="tier-badge tier-a" style="font-size:10px;">A</span></div>
+        <div class="spectrum">
+          <span class="spectrum-label">Dominant</span>
+          <div class="spectrum-bar"><div class="spectrum-fill" style="width:40%; background:linear-gradient(90deg, var(--tier-a), #a78bfa);"></div></div>
+          <span class="spectrum-label right">Facilitative</span>
+        </div>
+      </div>
+      <div style="margin:16px 0;">
+        <div style="font-size:13px; color:var(--cream-50); margin-bottom:4px;">David Ferrel <span class="tier-badge tier-b" style="font-size:10px;">B</span></div>
+        <div class="spectrum">
+          <span class="spectrum-label">Dominant</span>
+          <div class="spectrum-bar"><div class="spectrum-fill" style="width:15%; background:linear-gradient(90deg, var(--tier-b), #3b82f6);"></div></div>
+          <span class="spectrum-label right">Facilitative</span>
+        </div>
+      </div>
+      <div style="margin:16px 0;">
+        <div style="font-size:13px; color:var(--cream-50); margin-bottom:4px;">Andrew Warkentin <span class="tier-badge tier-c" style="font-size:10px;">C</span></div>
+        <div class="spectrum">
+          <span class="spectrum-label">Dominant</span>
+          <div class="spectrum-bar"><div class="spectrum-fill" style="width:15%; background:linear-gradient(90deg, var(--tier-c), #dc2626);"></div></div>
+          <span class="spectrum-label right">Facilitative</span>
+        </div>
+      </div>
+      <div style="margin:16px 0;">
+        <div style="font-size:13px; color:var(--cream-50); margin-bottom:4px;">Jenny Baer <span class="tier-badge tier-c" style="font-size:10px;">C</span></div>
+        <div class="spectrum">
+          <span class="spectrum-label">Dominant</span>
+          <div class="spectrum-bar"><div class="spectrum-fill" style="width:20%; background:linear-gradient(90deg, var(--tier-c), #dc2626);"></div></div>
+          <span class="spectrum-label right">Facilitative</span>
+        </div>
+      </div>
+
+      <div class="insight mt-md">
+        <div class="insight-label">The Sweet Spot</div>
+        <p><strong>40-65% dominant</strong> = "Facilitative with Backbone." They listen, ask questions, implement feedback, AND push back when something doesn't resonate. They have enough confidence to negotiate but enough humility to learn. This is your Architect (S-Tier) zone. Pure dominance (Frank at 95%) means they won't be coachable. Pure facilitation (David at 15%, Andrew at 15%) means they won't take autonomous action.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== QUIZ SUBMISSIONS ===================== -->
+  <div id="submissions" class="section">
+    <div class="card">
+      <h2>Quiz Submissions Viewer</h2>
+      <p style="font-size:13px; color:var(--cream-30); margin-bottom:16px;">View Scale Readiness Scorecard submissions from prospects. Connect your n8n webhook to pull live data.</p>
+
+      <div class="webhook-bar">
+        <input type="text" id="webhookUrl" placeholder="Paste n8n webhook GET URL (e.g., https://your-n8n.app/webhook/quiz-results)" />
+        <button onclick="fetchSubmissions()">Load Results</button>
+        <span class="webhook-status" id="webhookStatus"></span>
+      </div>
+
+      <div id="submissionsContent">
+        <div class="submissions-empty">
+          <div class="empty-icon">&#128203;</div>
+          <h3>No Submissions Loaded</h3>
+          <p style="font-size:13px; max-width:400px; margin:0 auto;">Paste your n8n webhook URL above and click "Load Results" to pull quiz submissions. Each row shows the prospect's name, archetype, internal tier, and score — click to expand full details.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== DECISION TREE ===================== -->
+  <div id="decision" class="section">
+    <div class="card" style="padding:16px;">
+      <h2 style="padding:0 12px;">Quick-Sort Decision Tree</h2>
+      <p style="font-size:13px; color:var(--cream-30); margin:0 12px 16px; ">Use for rapid triage in the first 10 minutes of a call. Click any node for additional detail.</p>
+
+      <div class="flowchart-wrap">
+        <div class="fc-controls">
+          <button class="fc-btn" onclick="fcZoom(1)" title="Zoom In">+</button>
+          <button class="fc-btn" onclick="fcZoom(-1)" title="Zoom Out">−</button>
+          <button class="fc-btn" onclick="fcFit()" title="Fit to View">⊡</button>
+        </div>
+        <div class="fc-viewport" id="fcViewport">
+          <div class="fc-canvas" id="fcCanvas">
+
+            <!-- Q1 -->
+            <div class="fc-col">
+              <div class="fc-node q" onclick="toggleFcNode(this)">
+                <strong>Q1:</strong> Do they have paying clients and know their exact MRR?
+                <div class="fc-detail">Listen for specific numbers quoted unprompted. "About $20k" is different from "I'm not sure exactly." The precision matters as much as the number.</div>
+              </div>
+              <div class="fc-row">
+                <div class="fc-col">
+                  <div class="fc-connector"></div>
+                  <div class="fc-label no">NO</div>
+                  <div class="fc-connector"></div>
+                  <div class="fc-node outcome-b" onclick="toggleFcNode(this)">
+                    <strong>Likely B or C-Tier.</strong> Pre-revenue prospects rarely become champions. Proceed with caution.
+                    <div class="fc-detail">Foundation Builders (B) may still have potential if they show strong mindset signals. Explorers (C) without revenue AND without self-awareness are almost always disqualifiers.</div>
+                  </div>
+                </div>
+                <div class="fc-h-line"></div>
+                <div class="fc-col">
+                  <div class="fc-connector"></div>
+                  <div class="fc-label yes">YES</div>
+                  <div class="fc-connector"></div>
+
+                  <!-- Q2 -->
+                  <div class="fc-node q" onclick="toggleFcNode(this)">
+                    <strong>Q2:</strong> Did they take action BEFORE this call? (consumed content, filled planner, researched program)
+                    <div class="fc-detail">Pre-call action is the single strongest leading indicator. Matt consumed everything. Victor M pre-decided. Frank came cold and positioned as evaluator.</div>
+                  </div>
+                  <div class="fc-row">
+                    <div class="fc-col">
+                      <div class="fc-connector"></div>
+                      <div class="fc-label no">NO</div>
+                      <div class="fc-connector"></div>
+                      <div class="fc-node outcome-c" onclick="toggleFcNode(this)">
+                        <strong>C-Tier signal.</strong> Transactional buyer. Came to evaluate, not engage. Watch for "I already know" language.
+                        <div class="fc-detail">Explorer pattern: They treat discovery calls like vendor demos. If they also show dominance signals (controlling the call, positioning as equal), this is a strong disqualifier.</div>
+                      </div>
+                    </div>
+                    <div class="fc-h-line"></div>
+                    <div class="fc-col">
+                      <div class="fc-connector"></div>
+                      <div class="fc-label yes">YES</div>
+                      <div class="fc-connector"></div>
+
+                      <!-- Q3 -->
+                      <div class="fc-node q" onclick="toggleFcNode(this)">
+                        <strong>Q3:</strong> When they describe struggles, do they own the problem or blame external factors?
+                        <div class="fc-detail">Ownership language: "I've been the bottleneck," "I created this problem." Blame language: "The market changed," "It's not working like it used to," "I lost my mojo."</div>
+                      </div>
+                      <div class="fc-row">
+                        <div class="fc-col">
+                          <div class="fc-connector"></div>
+                          <div class="fc-label no">BLAME</div>
+                          <div class="fc-connector"></div>
+                          <div class="fc-node outcome-c" onclick="toggleFcNode(this)">
+                            <strong>C-Tier signal.</strong> "Not working like it used to" = market blame. "Lost my mojo" = identity fragility. High refund risk.
+                            <div class="fc-detail">Cassie and Eric patterns. Even if they have revenue, externalized blame predicts poor coaching outcomes. They'll blame you next when results don't appear on their timeline.</div>
+                          </div>
+                        </div>
+                        <div class="fc-h-line"></div>
+                        <div class="fc-col">
+                          <div class="fc-connector"></div>
+                          <div class="fc-label yes">OWN IT</div>
+                          <div class="fc-connector"></div>
+
+                          <!-- Q4 -->
+                          <div class="fc-node q" onclick="toggleFcNode(this)">
+                            <strong>Q4:</strong> Can they make the investment decision autonomously?
+                            <div class="fc-detail">Decision sovereignty = no spouse/partner/accountant needed. They either decide on the call or commit to a firm timeline in hours, not weeks.</div>
+                          </div>
+                          <div class="fc-row">
+                            <div class="fc-col">
+                              <div class="fc-connector"></div>
+                              <div class="fc-label no">NO</div>
+                              <div class="fc-connector"></div>
+                              <div class="fc-node outcome-c" onclick="toggleFcNode(this)">
+                                <strong>C-Tier signal.</strong> External decision dependency predicts follow-through problems. Andrew and Cassie patterns.
+                                <div class="fc-detail">If they can't decide on a $6-10k investment alone, they likely can't make other autonomous business decisions either. This pattern extends to implementation and community engagement.</div>
+                              </div>
+                            </div>
+                            <div class="fc-h-line"></div>
+                            <div class="fc-col">
+                              <div class="fc-connector"></div>
+                              <div class="fc-label yes">YES</div>
+                              <div class="fc-connector"></div>
+
+                              <!-- Q5 -->
+                              <div class="fc-node q" onclick="toggleFcNode(this)">
+                                <strong>Q5:</strong> Do they talk about 12+ month vision or just solving today's problem?
+                                <div class="fc-detail">Architects think in years. Optimizers think in quarters. Foundation Builders think in weeks. Explorers think in transactions.</div>
+                              </div>
+                              <div class="fc-row">
+                                <div class="fc-col">
+                                  <div class="fc-connector"></div>
+                                  <div class="fc-label no">TODAY</div>
+                                  <div class="fc-connector"></div>
+                                  <div class="fc-node outcome-a" onclick="toggleFcNode(this)">
+                                    <strong>A-Tier likely (Optimizer).</strong> Has business foundation but needs strategic elevation. Good candidate with right expectations.
+                                    <div class="fc-detail">Optimizers are your bread-and-butter enrollments. They'll implement, they'll grow, they just need the right framework. Don't pressure the close — let them process and compare.</div>
+                                  </div>
+                                </div>
+                                <div class="fc-h-line"></div>
+                                <div class="fc-col">
+                                  <div class="fc-connector"></div>
+                                  <div class="fc-label yes">LONG VISION</div>
+                                  <div class="fc-connector"></div>
+
+                                  <!-- Q6 -->
+                                  <div class="fc-node q" onclick="toggleFcNode(this)">
+                                    <strong>Q6:</strong> Do they naturally mention community contribution? (testimonials, referrals, bringing team)
+                                    <div class="fc-detail">Unprompted offers to create content, share wins, or help others are the final separator between A-Tier and S-Tier. This can't be taught — it's intrinsic.</div>
+                                  </div>
+                                  <div class="fc-row">
+                                    <div class="fc-col">
+                                      <div class="fc-connector"></div>
+                                      <div class="fc-label no">NO</div>
+                                      <div class="fc-connector"></div>
+                                      <div class="fc-node outcome-a" onclick="toggleFcNode(this)">
+                                        <strong>Solid A-Tier (Optimizer).</strong> Will implement and grow but may not drive community culture.
+                                        <div class="fc-detail">Still a great enrollment. They'll be a quiet achiever who gets results. Just don't expect them to be your referral engine or testimonial champion.</div>
+                                      </div>
+                                    </div>
+                                    <div class="fc-h-line"></div>
+                                    <div class="fc-col">
+                                      <div class="fc-connector"></div>
+                                      <div class="fc-label yes">YES</div>
+                                      <div class="fc-connector"></div>
+                                      <div class="fc-node outcome-s" onclick="toggleFcNode(this)">
+                                        <strong>S-TIER PROSPECT (The Architect).</strong> Builder identity, self-ownership, pre-engaged, autonomous, long-term vision, community-minded. Enroll immediately. Protect the relationship.
+                                        <div class="fc-detail">This is your champion. Close fast, don't oversell. Give implementation details, not inspiration. Assign community roles early. Accommodate creative deal structures. They will become a referral engine.</div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== SALES PLAYBOOK ===================== -->
+  <div id="playbook" class="section">
+    <div class="card">
+      <h2>Sales Playbook by Predicted Tier</h2>
+
+      <h3><span class="tier-badge tier-s">S-TIER</span> The Architect — Close Fast, Protect the Relationship</h3>
+      <ul class="signal-list">
+        <li><span class="signal-icon signal-green">&#10003;</span> <div><strong>Don't oversell.</strong> They've already pre-decided. Match their energy, validate their instinct, and remove friction. Harry and Victor M were pre-committed before the call ended.</div></li>
+        <li><span class="signal-icon signal-green">&#10003;</span> <div><strong>Use their language back.</strong> When they say "I want to be your best testimonial" — that's your close. "Then let's make that happen. Here's how we start."</div></li>
+        <li><span class="signal-icon signal-green">&#10003;</span> <div><strong>Give them implementation details, not inspiration.</strong> They don't need motivation. They need "here's the dashboard, here's week 1, here's what you'll build."</div></li>
+        <li><span class="signal-icon signal-green">&#10003;</span> <div><strong>Accommodate creative deal structures.</strong> Harry negotiated podcast + mastermind + split payment. Architects will find creative ways to make it work. Let them.</div></li>
+        <li><span class="signal-icon signal-green">&#10003;</span> <div><strong>Assign them community roles early.</strong> They'll naturally become culture-builders. Give them micro-responsibilities (welcome new members, share case studies) within the first week.</div></li>
+      </ul>
+
+      <h3 class="mt-md"><span class="tier-badge tier-a">A-TIER</span> The Optimizer — Build Confidence, Show the Framework</h3>
+      <ul class="signal-list">
+        <li><span class="signal-icon signal-green">&#10003;</span> <div><strong>Give them the pricing breakthrough on the call.</strong> When they say "I know I'm underselling myself," that's your opening. Show them what proper pricing looks like. This creates an immediate win that they attribute to you.</div></li>
+        <li><span class="signal-icon signal-green">&#10003;</span> <div><strong>Show specific peer examples.</strong> "Thierry was in your exact situation... here's what happened in 90 days." Optimizers respond to proof, not promises.</div></li>
+        <li><span class="signal-icon signal-green">&#10003;</span> <div><strong>Don't pressure the close.</strong> Let them compare. If your call was solid, they'll come back. Daniel and Manuel both needed processing time — and that's fine for Optimizers.</div></li>
+        <li><span class="signal-icon signal-green">&#10003;</span> <div><strong>Address the "other mentor" objection directly.</strong> Manuel already had a 1:1 mentor. Frame it as "complementary, not competing" — community + systems vs. 1:1 tactical advice.</div></li>
+      </ul>
+
+      <h3 class="mt-md"><span class="tier-badge tier-b">B-TIER</span> The Foundation Builder — Set Expectations, Create Guardrails</h3>
+      <ul class="signal-list">
+        <li><span class="signal-icon signal-yellow">!</span> <div><strong>Be honest about the work required.</strong> If they're pre-revenue (David), make sure they understand the 90-day sprint requires significant time and action. Don't let excitement mask capacity constraints.</div></li>
+        <li><span class="signal-icon signal-yellow">!</span> <div><strong>Pair them with stage-appropriate peers immediately.</strong> Mark explicitly told David to connect with Tom and Lewis. Foundation Builders will feel lost among Architect/Optimizer achievers.</div></li>
+        <li><span class="signal-icon signal-yellow">!</span> <div><strong>Build in accountability checkpoints.</strong> Foundation Builders need more structure. Weekly check-ins, specific deliverables, clear milestones. Without these, they'll drift.</div></li>
+        <li><span class="signal-icon signal-yellow">!</span> <div><strong>Consider whether enrollment serves them.</strong> If someone is clearly pre-revenue with no business model, the honest thing may be "come back when you have your first client." This protects your community AND the prospect.</div></li>
+      </ul>
+
+      <h3 class="mt-md"><span class="tier-badge tier-c">C-TIER</span> The Explorer — Disqualify with Respect</h3>
+      <ul class="signal-list">
+        <li><span class="signal-icon signal-red">&#10007;</span> <div><strong>Don't chase Explorer revenue.</strong> $5-10k from someone who will request a refund, drain coaching resources, and potentially damage community culture is a net negative. Walk away.</div></li>
+        <li><span class="signal-icon signal-red">&#10007;</span> <div><strong>Redirect with dignity.</strong> "Based on what you've shared, I think a 1:1 consultant specializing in [their specific need] would serve you better right now. We can revisit in 6 months."</div></li>
+        <li><span class="signal-icon signal-red">&#10007;</span> <div><strong>If you do enroll them, document expectations.</strong> Clear written expectations about participation, action requirements, and what refund situations look like. This protects both parties.</div></li>
+        <li><span class="signal-icon signal-red">&#10007;</span> <div><strong>Watch for the "vendor" frame.</strong> If a prospect says "you are my vendor," that's an Explorer disqualifier. Your program is mentor-mentee, not vendor-client. That frame mismatch guarantees conflict.</div></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>The 4 Questions That Predict Everything</h2>
+      <p style="font-size:13px; color:var(--cream-30); margin-bottom:16px;">Based on cross-tier analysis, these four questions — asked naturally during discovery — will predict tier placement with high accuracy.</p>
+
+      <div class="score-grid">
+        <div class="score-item">
+          <div class="label">Question 1</div>
+          <div class="desc" style="color:var(--cream-50);">"What have you already tried to solve this problem?"</div>
+          <div class="desc" style="margin-top:6px;"><strong style="color:var(--tier-s)">Architect:</strong> Lists specific actions, results, and learnings. <strong style="color:var(--tier-c)">Explorer:</strong> "I've been exploring" or tells war stories about past wins.</div>
+        </div>
+        <div class="score-item">
+          <div class="label">Question 2</div>
+          <div class="desc" style="color:var(--cream-50);">"If this works, what does your business look like in 12 months?"</div>
+          <div class="desc" style="margin-top:6px;"><strong style="color:var(--tier-s)">Architect:</strong> Specific numbers, team size, lifestyle vision. <strong style="color:var(--tier-c)">Explorer:</strong> Vague ("making more money") or narrow ("just need one thing").</div>
+        </div>
+        <div class="score-item">
+          <div class="label">Question 3</div>
+          <div class="desc" style="color:var(--cream-50);">"What's held you back from solving this on your own?"</div>
+          <div class="desc" style="margin-top:6px;"><strong style="color:var(--tier-s)">Architect:</strong> "I need the right systems and people around me." <strong style="color:var(--tier-c)">Explorer:</strong> "The market changed" or "I just need the right tactic."</div>
+        </div>
+        <div class="score-item">
+          <div class="label">Question 4</div>
+          <div class="desc" style="color:var(--cream-50);">"How would you describe your role in this community if you joined?"</div>
+          <div class="desc" style="margin-top:6px;"><strong style="color:var(--tier-s)">Architect:</strong> "I'd share what's working, learn from others, maybe mentor." <strong style="color:var(--tier-c)">Explorer:</strong> "I'd want to get [specific thing] out of it."</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Refund Risk Prediction Timeline</h2>
+      <div class="table-wrap">
+      <table class="comp-table">
+        <thead><tr><th>Timeframe</th><th style="color:var(--tier-c)">Explorer (C)</th><th style="color:var(--tier-b)">Foundation Builder (B)</th><th style="color:var(--tier-a)">Optimizer (A)</th><th style="color:var(--tier-s)">Architect (S)</th></tr></thead>
+        <tbody>
+          <tr>
+            <td style="font-weight:600;">Week 1–2</td>
+            <td>Excited, quick implementation attempt</td>
+            <td>Consuming content, taking notes</td>
+            <td>Asking questions, starting frameworks</td>
+            <td>Implementing systems, sharing early wins</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;">Week 3–4</td>
+            <td style="color:var(--tier-c)">Reality hits: "This isn't working for my situation"</td>
+            <td>Still consuming, slow to implement</td>
+            <td>First results appearing, pricing changes</td>
+            <td>Visible results, active in community</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;">Week 5–8</td>
+            <td style="color:var(--tier-c)">Refund request or ghosting</td>
+            <td style="color:var(--tier-b)">Needs coaching push to stay engaged</td>
+            <td>Building momentum, systems taking hold</td>
+            <td>Becoming community leader, referring others</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;">Week 9–12</td>
+            <td style="color:var(--tier-c)">Already gone or resentful</td>
+            <td>Mixed results, may or may not continue</td>
+            <td>Significant growth, considering renewal</td>
+            <td>Champion member, creates content, stays long-term</td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ---- TAB NAVIGATION ---- */
+function showTab(id, btn) {
+  document.querySelectorAll('.section').forEach(function(s) { s.classList.remove('active'); });
+  document.querySelectorAll('.nav button').forEach(function(b) { b.classList.remove('active'); });
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  var desc = btn.getAttribute('data-desc') || '';
+  document.getElementById('navDesc').textContent = desc;
+}
+
+/* ---- FLOWCHART ZOOM ---- */
+var fcScale = 1;
+function fcZoom(dir) {
+  fcScale = Math.max(0.4, Math.min(2, fcScale + dir * 0.15));
+  document.getElementById('fcCanvas').style.transform = 'scale(' + fcScale + ')';
+}
+function fcFit() {
+  fcScale = 1;
+  document.getElementById('fcCanvas').style.transform = 'scale(1)';
+  document.getElementById('fcViewport').scrollTo(0, 0);
+}
+
+/* Scroll-to-zoom */
+document.addEventListener('DOMContentLoaded', function() {
+  var vp = document.getElementById('fcViewport');
+  if (vp) {
+    vp.addEventListener('wheel', function(e) {
+      if (e.ctrlKey || e.metaKey) {
+        e.preventDefault();
+        fcZoom(e.deltaY < 0 ? 1 : -1);
+      }
+    }, { passive: false });
+  }
+});
+
+/* ---- FLOWCHART NODE EXPAND ---- */
+function toggleFcNode(el) {
+  el.classList.toggle('expanded');
+}
+
+/* ---- QUIZ SUBMISSIONS ---- */
+function fetchSubmissions() {
+  var url = document.getElementById('webhookUrl').value.trim();
+  var statusEl = document.getElementById('webhookStatus');
+  if (!url) {
+    statusEl.textContent = 'Please enter a webhook URL.';
+    statusEl.style.color = 'var(--tier-c)';
+    return;
+  }
+  statusEl.textContent = 'Loading...';
+  statusEl.style.color = 'var(--cream-30)';
+
+  fetch(url)
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      var rows = Array.isArray(data) ? data : (data.submissions || data.results || data.data || []);
+      if (!rows.length) {
+        statusEl.textContent = 'Connected but no submissions found.';
+        statusEl.style.color = 'var(--tier-b)';
+        return;
+      }
+      statusEl.textContent = rows.length + ' submissions loaded.';
+      statusEl.style.color = 'var(--tier-s)';
+      renderSubmissions(rows);
+    })
+    .catch(function(err) {
+      statusEl.textContent = 'Error: ' + (err.message || 'Could not connect.');
+      statusEl.style.color = 'var(--tier-c)';
+    });
+}
+
+var tierMap = { S: 'tier-s', A: 'tier-a', B: 'tier-b', C: 'tier-c' };
+var archetypeMap = { S: 'The Architect', A: 'The Optimizer', B: 'The Foundation Builder', C: 'The Explorer' };
+var tierColorMap = { S: 'var(--tier-s)', A: 'var(--tier-a)', B: 'var(--tier-b)', C: 'var(--tier-c)' };
+
+function renderSubmissions(rows) {
+  var container = document.getElementById('submissionsContent');
+  var html = '<div class="sub-table-wrap"><table class="sub-table"><thead><tr>' +
+    '<th>Name</th><th>Email</th><th>Date</th><th>Tier</th><th>Archetype</th><th>Score</th>' +
+    '</tr></thead><tbody>';
+
+  rows.forEach(function(r, i) {
+    var tier = (r.internalTier || r.tier || 'C').charAt(0).toUpperCase();
+    var pct = r.percentage || Math.round((r.totalScore / (r.maxScore || 60)) * 100);
+    var name = r.firstName || r.name || '—';
+    var email = r.email || '—';
+    var date = r.timestamp ? new Date(r.timestamp).toLocaleDateString() : '—';
+    var arch = r.archetype ? formatArchetype(r.archetype) : (archetypeMap[tier] || '—');
+
+    html += '<tr onclick="toggleSubmissionRow(' + i + ')">' +
+      '<td style="font-weight:600;color:var(--cream)">' + escHtml(name) + '</td>' +
+      '<td>' + escHtml(email) + '</td>' +
+      '<td>' + escHtml(date) + '</td>' +
+      '<td><span class="tier-badge ' + tierMap[tier] + '">' + tier + '-TIER</span></td>' +
+      '<td>' + escHtml(arch) + '</td>' +
+      '<td style="font-weight:700;color:' + tierColorMap[tier] + '">' + pct + '%</td>' +
+      '</tr>';
+
+    html += '<tr class="sub-expand" id="subRow' + i + '"><td colspan="6">';
+    html += '<div class="sub-detail-inner">';
+
+    /* Category bars */
+    if (r.categoryScores) {
+      html += '<h4 style="font-size:13px;color:var(--cream);margin-bottom:8px;font-weight:700;">Category Breakdown</h4>';
+      html += '<div class="sub-cat-bars">';
+      var cats = r.categoryScores;
+      var catNames = ['Business Foundation', 'Execution & Action', 'Mindset & Psychology', 'Growth Orientation', 'Collaboration & Leadership'];
+      var catKeys = Object.keys(cats);
+      catKeys.forEach(function(key, ci) {
+        var catPct = typeof cats[key] === 'object' ? Math.round((cats[key].score / cats[key].max) * 100) : Math.round((cats[key] / 12) * 100);
+        html += '<div class="sub-cat-bar">' +
+          '<div class="cat-label">' + escHtml(catNames[ci] || key) + '</div>' +
+          '<div class="cat-track"><div class="cat-fill" style="width:' + catPct + '%;background:' + tierColorMap[tier] + '"></div></div>' +
+          '<div class="cat-pct">' + catPct + '%</div></div>';
+      });
+      html += '</div>';
+    }
+
+    /* Individual answers */
+    if (r.answers && typeof r.answers === 'object') {
+      html += '<h4 style="font-size:13px;color:var(--cream);margin:16px 0 8px;font-weight:700;">Individual Dimension Scores</h4>';
+      html += '<div class="sub-scores-grid">';
+      Object.keys(r.answers).forEach(function(dim) {
+        var val = typeof r.answers[dim] === 'object' ? r.answers[dim].score : r.answers[dim];
+        html += '<div class="sub-score-item"><span class="dim-name">' + escHtml(formatDim(dim)) + '</span><span class="dim-val">' + escHtml(String(val)) + '/4</span></div>';
+      });
+      html += '</div>';
+    }
+
+    html += '</div></td></tr>';
+  });
+
+  html += '</tbody></table></div>';
+  container.innerHTML = html;
+}
+
+function toggleSubmissionRow(idx) {
+  var row = document.getElementById('subRow' + idx);
+  if (row) row.classList.toggle('show');
+}
+
+function formatArchetype(key) {
+  var map = { architect: 'The Architect', optimizer: 'The Optimizer', builder: 'The Foundation Builder', explorer: 'The Explorer' };
+  return map[key.toLowerCase()] || key;
+}
+
+function formatDim(key) {
+  return key.replace(/_/g, ' ').replace(/\b\w/g, function(c) { return c.toUpperCase(); });
+}
+
+function escHtml(str) {
+  var d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+}
+</script>
+</body>
+</html>
