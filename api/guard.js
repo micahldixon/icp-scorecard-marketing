@@ -1,5 +1,5 @@
 /**
- * Guard: serves index.html only when a valid session cookie is present.
+ * Guard: serves _app.html (in api/) only when a valid session cookie is present; not exposed as a static URL.
  * Used via vercel.json rewrite: / → /api/guard
  * Password is never in code; compare uses env SCORECARD_PASSWORD.
  */
@@ -63,12 +63,12 @@ module.exports = function handler(req, res) {
     return res.status(302).end();
   }
 
-  const htmlPath = path.resolve(__dirname, '..', 'index.html');
+  const htmlPath = path.join(__dirname, '_app.html');
   let html;
   try {
     html = fs.readFileSync(htmlPath, 'utf8');
   } catch (err) {
-    console.error('guard: failed to read index.html', err);
+    console.error('guard: failed to read _app.html', err);
     return res.status(500).send('Internal error');
   }
 
