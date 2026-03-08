@@ -1,0 +1,12 @@
+{"sessionId":"42f3ae","location":"guard.js:handler","message":"guard invoked","data":{"method":"GET","url":"/"},"timestamp":1772936433589,"hypothesisId":"A"}
+{"sessionId":"42f3ae","location":"guard.js:getCookie","message":"cookie check","data":{"hasToken":false},"timestamp":1772936433593,"hypothesisId":"D"}
+{"sessionId":"42f3ae","location":"guard.js:redirect","message":"redirecting to /login","data":{},"timestamp":1772936433593,"hypothesisId":"C"}
+{"sessionId":"42f3ae","location":"guard.js:handler","message":"guard invoked","data":{"method":"GET","url":"/"},"timestamp":1772936439512,"hypothesisId":"A"}
+{"sessionId":"42f3ae","location":"guard.js:getCookie","message":"cookie check","data":{"hasToken":false},"timestamp":1772936439515,"hypothesisId":"D"}
+{"sessionId":"42f3ae","location":"guard.js:redirect","message":"redirecting to /login","data":{},"timestamp":1772936439515,"hypothesisId":"C"}
+{"sessionId":"42f3ae","location":"guard.js:handler","message":"guard invoked","data":{"method":"GET","url":"/"},"timestamp":1772936656804,"hypothesisId":"A"}
+{"sessionId":"42f3ae","location":"guard.js:getCookie","message":"cookie check","data":{"hasToken":false},"timestamp":1772936656807,"hypothesisId":"D"}
+{"sessionId":"42f3ae","location":"guard.js:redirect","message":"redirecting to /login","data":{},"timestamp":1772936656807,"hypothesisId":"C"}
+{"sessionId":"42f3ae","location":"guard.js:handler","message":"guard invoked","data":{"method":"GET","url":"/"},"timestamp":1772936786463,"hypothesisId":"A"}
+{"sessionId":"42f3ae","location":"guard.js:getCookie","message":"cookie check","data":{"hasToken":true},"timestamp":1772936786467,"hypothesisId":"D"}
+{"sessionId":"42f3ae","location":"guard.js:serve","message":"serving index.html","data":{},"timestamp":1772936786469,"hypothesisId":"C"}
